@@ -59,7 +59,6 @@ class FeatureSelector:
         self.Q_constant = Q_constant
         self.feature_pheromone = np.full(self.number_features, self.initial_pheromone)
         self.unvisited_features = np.arange(self.number_features)
-        self.visited_features = np.zeros(self.number_features)
         self.ant_accuracy = np.zeros(self.number_ants)
 
 
@@ -117,7 +116,8 @@ class FeatureSelector:
         indexes = np.where(np.in1d(self.unvisited_features, self.ants[index_ant].feature_path))[0]
         self.unvisited_features = np.delete(self.unvisited_features, indexes)
 
-        while True:
+        run = True
+        while run:
             # Initialize parameters
             p = np.zeros(np.size(self.unvisited_features))
             p_num = np.zeros(np.size(self.unvisited_features))
@@ -142,28 +142,22 @@ class FeatureSelector:
             # Compute denominator as sumatory of the numerators, if it's 0 none of the rest of univisited features improves the actualsubset
             p_den = np.sum(p_num)
             if p_den == 0:
-                break
-            
-            # Compute common probabilistic function of ACO
-            for index_uf in range(len(self.unvisited_features)):
-                np.put(p, index_uf, p_num[index_uf] / p_den)    
+                run = False
+            else:
+                # Compute common probabilistic function of ACO
+                for index_uf in range(len(self.unvisited_features)):
+                    np.put(p, index_uf, p_num[index_uf] / p_den)    
 
-            # Choose the feature with best probability and add to the ant subset
-            value_best_p = np.amax(p)
-            index_best_p = np.argmax(p)
-            self.ants[index_ant].feature_path.append(self.unvisited_features[index_best_p])
-            # Update the pheromone counter
-            ivf = self.unvisited_features[index_best_p]
-            self.visited_features[ivf] += 1
-            # Remove the chosen feature of the unvisited features
-            self.unvisited_features = np.delete(self.unvisited_features, index_best_p)
+                # Choose the feature with best probability and add to the ant subset
+                index_best_p = np.argmax(p)
+                self.ants[index_ant].feature_path.append(self.unvisited_features[index_best_p])
+                # Remove the chosen feature of the unvisited features
+                self.unvisited_features = np.delete(self.unvisited_features, index_best_p)
 
         print("\t\tPath:" ,self.ants[index_ant].feature_path)
         print("\t\tAcuraccy:", self.ant_accuracy[index_ant])
         #print("\t\tPheromones:", self.feature_pheromone[self.ants[index_ant].feature_path])
 
-
-        return self.ants[index_ant]
 
     def updatePheromones(self):
         """Update the pheromones trail depending on which variant of the algorithm it is selected.
