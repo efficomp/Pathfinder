@@ -1,6 +1,6 @@
 __author__ = 'Alberto Ortega'
 __copyright__ = 'Pathfinder (c) 2021 EFFICOMP'
-__credits__ =  'Spanish Ministerio de Economıa y Competitividad under grants number TIN2012-32039 and TIN2015-67020-P. Spanish Ministerio de Ciencia, Innovacion y Universidades under grant number PGC2018-098813-B-C31. European Regional Development Fund (ERDF).'
+__credits__ =  'Spanish Ministerio de Ciencia, Innovacion y Universidades under grant number PGC2018-098813-B-C31. European Regional Development Fund (ERDF).'
 __license__ = ' GPL-3.0'
 __maintainer__ = 'Alberto Ortega'
 __email__ = 'aoruiz@ugr.es'

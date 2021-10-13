@@ -39,12 +39,10 @@ where:
 
 This work has been funded by:
 
-* Spanish *Ministerio de Economía y Competitividad* under grants number TIN2012-32039 and TIN2015-67020-P.
 * Spanish [*Ministerio de Ciencia, Innovación y Universidades*](https://www.ciencia.gob.es/) under grant number PGC2018-098813-B-C31.
 * [*European Regional Development Fund (ERDF)*](https://ec.europa.eu/regional_policy/en/funding/erdf/).
 
 <div style="text-align: right">
-  <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/mineco.png" height="70">
   <a href="https://www.ciencia.gob.es/">
     <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/miciu.jpg" height="70">
   </a>
@@ -63,4 +61,4 @@ Pathfinder © 2021 [EFFICOMP](https://atcproyectos.ugr.es/efficomp/).
 
 ## Publications
 
-
+1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. "Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification". In: *Bioengineering and Biomedical Signal and Image Processing*. BIOMESIP 2021. Lecture Notes in Computer Science, vol 12940, pp 323-336,  Springer, Cham. doi: 10.1007/978-3-030-88163-4_28
