@@ -61,4 +61,4 @@ Pathfinder © 2021 [EFFICOMP](https://atcproyectos.ugr.es/efficomp/).
 
 ## Publications
 
-1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. "Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification". In: *Bioengineering and Biomedical Signal and Image Processing*. BIOMESIP 2021. Lecture Notes in Computer Science, vol 12940, pp 323-336,  Springer, Cham. doi: 10.1007/978-3-030-88163-4_28
+1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. "Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification". In: *Proceedings of the 1st International Conference on Bioengineering and Biomedical Signal and Image Processing*. BIOMESIP'2021. Gran Canaria, Spain: Springer, July 2021, pp. 323-336. doi: 10.1007/978-3-030-88163-4_28
