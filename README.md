@@ -41,7 +41,7 @@ where:
 
 ## Acknowledgments
 
-This work was supported by project *New Computing Paradigms and Heterogeneous Parallel Architectures for High-Performance and Energy Efficiency of Classification and Optimization Tasks on Biomedical Engineering Applications* ([HPEE-COBE] (https://efficomp.ugr.es/research/projects/hpee-cobe/)), with reference PGC2018-098813-B-C31, funded by the Spanish *[Ministerio de Ciencia, Innovación y Universidades](https://www.ciencia.gob.es/)*, and by the [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
+This work was supported by project *New Computing Paradigms and Heterogeneous Parallel Architectures for High-Performance and Energy Efficiency of Classification and Optimization Tasks on Biomedical Engineering Applications* ([HPEE-COBE](https://efficomp.ugr.es/research/projects/hpee-cobe/)), with reference PGC2018-098813-B-C31, funded by the Spanish *[Ministerio de Ciencia, Innovación y Universidades](https://www.ciencia.gob.es/)*, and by the [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
 
 <div style="text-align: right">
   <a href="https://www.ciencia.gob.es/">
