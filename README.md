@@ -35,12 +35,13 @@ where:
 - numberElitistAnts = Number of elitist ants for the algorithm. In case of choosing ACOFS for version, this argument should be 0.
 - numberColonies = Number of colonies for the algorithm.
 
+## Publications
+
+* A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. *Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification*. In: **International Conference on Bioengineering and Biomedical Signal and Image Processing. BIOMESIP 2021**, pp. 323-336. https://doi.org/10.1007/978-3-030-88163-4_28
+
 ## Acknowledgments
 
-This work has been funded by:
-
-* Spanish [*Ministerio de Ciencia, Innovación y Universidades*](https://www.ciencia.gob.es/) under grant number PGC2018-098813-B-C31.
-* [*European Regional Development Fund (ERDF)*](https://ec.europa.eu/regional_policy/en/funding/erdf/).
+This work was supported by project *New Computing Paradigms and Heterogeneous Parallel Architectures for High-Performance and Energy Efficiency of Classification and Optimization Tasks on Biomedical Engineering Applications* ([HPEE-COBE] (https://efficomp.ugr.es/research/projects/hpee-cobe/)), with reference PGC2018-098813-B-C31, funded by the Spanish *[Ministerio de Ciencia, Innovación y Universidades](https://www.ciencia.gob.es/)*, and by the [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
 
 <div style="text-align: right">
   <a href="https://www.ciencia.gob.es/">
@@ -57,8 +58,4 @@ This work has been funded by:
 
 ## Copyright
 
-Pathfinder © 2021 [EFFICOMP](https://atcproyectos.ugr.es/efficomp/).
-
-## Publications
-
-1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. "Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification". In: *Proceedings of the 1st International Conference on Bioengineering and Biomedical Signal and Image Processing*. BIOMESIP'2021. Gran Canaria, Spain: Springer, July 2021, pp. 323-336. doi: 10.1007/978-3-030-88163-4_28
+Pathfinder © 2021 [EFFICOMP](https://efficomp.ugr.es).
