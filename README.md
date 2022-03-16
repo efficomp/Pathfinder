@@ -8,11 +8,11 @@ It has been developed with 2 additional variants: Elitist variant and Ranked-Bas
 
 Pathfinder requires Python 3. It also depends on the following Python packages:
 
-* [NumPy](https://numpy.org/)
-* [Scikit-learn](https://scikit-learn.org/stable/)
-* [Scipy](https://www.scipy.org/)
-* [TensorFlow](https://www.tensorflow.org/)
-* [Sphinx](https://www.sphinx-doc.org/en/master/)
+* [NumPy](https://numpy.org/).
+* [Scikit-learn](https://scikit-learn.org/stable/).
+* [Scipy](https://www.scipy.org/).
+* [TensorFlow](https://www.tensorflow.org/).
+* [Sphinx](https://www.sphinx-doc.org/en/master/) if you want to generate documentation.
 
 ## Documentation
 
@@ -37,19 +37,19 @@ where:
 
 ## Publications
 
-* A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. *Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification*. In: **International Conference on Bioengineering and Biomedical Signal and Image Processing. BIOMESIP 2021**, pp. 323-336. https://doi.org/10.1007/978-3-030-88163-4_28
+#### Conferences
 
-## Acknowledgments
+1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. *Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification*. In: **International Conference on Bioengineering and Biomedical Signal and Image Processing. BIOMESIP'2021**. Gran Canaria, Spain: Springer, July 2021, pp. 323-336. DOI: [10.1007/978-3-030-88163-4_28](https://doi.org/10.1007/978-3-030-88163-4_28)
 
-This work was supported by project *New Computing Paradigms and Heterogeneous Parallel Architectures for High-Performance and Energy Efficiency of Classification and Optimization Tasks on Biomedical Engineering Applications* ([HPEE-COBE](https://efficomp.ugr.es/research/projects/hpee-cobe/)), with reference PGC2018-098813-B-C31, funded by the Spanish *[Ministerio de Ciencia, Innovación y Universidades](https://www.ciencia.gob.es/)*, and by the [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
+## Funding
+
+This work has been funded by:
+* Spanish *[Ministerio de Ciencia, Innovación y Universidades](https://www.ciencia.gob.es/)* under grant number PGC2018-098813-B-C31. 
+* [European Regional Development Fund (ERDF)](https://ec.europa.eu/regional_policy/en/funding/erdf/).
 
 <div style="text-align: right">
-  <a href="https://www.ciencia.gob.es/">
-    <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/miciu.jpg" height="70">
-  </a>
-  <a href="https://ec.europa.eu/regional_policy/en/funding/erdf/">
-    <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/erdf.png" height="70">
-  </a>
+  <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/miciu.jpg" height="60">
+  <img src="https://raw.githubusercontent.com/efficomp/Hpmoon/main/docs/logos/erdf.png" height="60">
 </div>
 
 ## License
