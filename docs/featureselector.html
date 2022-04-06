@@ -80,19 +80,20 @@
 objects needed to compute the ACO algorithm applied correctly to Feature Selection.</p>
 <span class="target" id="module-featureselector"></span><dl class="py class">
 <dt class="sig sig-object py" id="featureselector.FeatureSelector">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">featureselector.</span></span><span class="sig-name descname"><span class="pre">FeatureSelector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algorithm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberAnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberElitistAnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_constant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialPheromone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaporationRate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">featureselector.</span></span><span class="sig-name descname"><span class="pre">FeatureSelector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_training_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_training_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberAnts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_testing_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_testing_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialPheromone</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaporationRate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.10)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Class for Ant System Optimization algorithm designed for Feature Selection.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>algorithm</strong> (<em>String</em>) – ACOFS, EACOFS or RACOFS, depending of which algorithm is going to be used.</p></li>
-<li><p><strong>dataset_x</strong> (<em>Numpy array</em>) – Training dataset.</p></li>
-<li><p><strong>dataset_y</strong> (<em>Numpy array</em>) – Class corresponding to the training dataset.</p></li>
-<li><p><strong>predictions_x</strong> (<em>Numpy array</em>) – Testing dataset.</p></li>
-<li><p><strong>predictions_y</strong> (<em>Numpy array</em>) – Class corresponding to the testing dataset.</p></li>
-<li><p><strong>numberAnts</strong> (<em>Integer</em>) – Number of ants of the colony.</p></li>
-<li><p><strong>iterations</strong> (<em>Integer</em>) – Number of colonies.</p></li>
+<li><p><strong>dtype</strong> (<em>MAT</em><em> or </em><em>CSV</em>) – Format of the dataset.</p></li>
+<li><p><strong>data_training_name</strong> (<em>Numpy array</em>) – Path to the training data file (mat) or path to the dataset file (csv).</p></li>
+<li><p><strong>class_training</strong> (<em>Numpy array</em>) – Path to the training classes file (mat).</p></li>
+<li><p><strong>data_testing</strong> (<em>Numpy array</em>) – Path to the testing data file (mat).</p></li>
+<li><p><strong>class_testing</strong> (<em>Numpy array</em>) – Path to the testing classes file (mat).</p></li>
+<li><p><strong>numberAnts</strong> (<em>Integer</em>) – Number of ants of the colonies.</p></li>
+<li><p><strong>iterations</strong> (<em>Integer</em>) – Number of colonies of the algorithm.</p></li>
+<li><p><strong>n_features</strong> (<em>Integer</em>) – Number of features to be selected.</p></li>
 <li><p><strong>alpha</strong> (<em>Float</em>) – Parameter which determines the weight of tau.</p></li>
 <li><p><strong>beta</strong> (<em>Float</em>) – Parameter which determines the weight of eta.</p></li>
 <li><p><strong>Q_constant</strong> (<em>Float</em>) – Parameter for the pheromones update function.</p></li>
@@ -103,7 +104,7 @@ objects needed to compute the ACO algorithm applied correctly to Feature Selecti
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="featureselector.FeatureSelector.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algorithm</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataset_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">predictions_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberAnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberElitistAnts</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_constant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialPheromone</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaporationRate</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mat'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_training_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_training_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">numberAnts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_features</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_testing_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_testing_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_constant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialPheromone</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">evaporationRate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Constructor method.</p>
 </dd></dl>
 
@@ -116,57 +117,36 @@ objects needed to compute the ACO algorithm applied correctly to Feature Selecti
 <dl class="py method">
 <dt class="sig sig-object py" id="featureselector.FeatureSelector.acoFS">
 <span class="sig-name descname"><span class="pre">acoFS</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.acoFS" title="Permalink to this definition"></a></dt>
-<dd><p>Call the <a class="reference internal" href="#featureselector.FeatureSelector.buildFinalSolutions" title="featureselector.FeatureSelector.buildFinalSolutions"><code class="xref py py-meth docutils literal notranslate"><span class="pre">featureselector.FeatureSelector.buildFinalSolutions()</span></code></a> and then it search the best ant of the last colony.
-:return: Path of the best ant of the last colony.
-:rtype: Array of Integers.</p>
+<dd><p>Compute the original ACO algorithm workflow. Firstly it resets the values of the ants (<a class="reference internal" href="#featureselector.FeatureSelector.resetInitialValues" title="featureselector.FeatureSelector.resetInitialValues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">featureselector.FeatureSelector.resetInitialValues()</span></code></a>),</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="featureselector.FeatureSelector.antBuildSubset">
 <span class="sig-name descname"><span class="pre">antBuildSubset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_ant</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.antBuildSubset" title="Permalink to this definition"></a></dt>
-<dd><p>Global and local search for the ACO algorithm. It completes the subset of features of the ant searching
-between all the rest of features in order to find the best one which improves the subset of features of the 
-actual ant.</p>
+<dd><p>Global and local search for the ACO algorithm. It completes the subset of features of the ant searching.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>index_ant</strong> (<em>Integer</em>) – Index of the ant array for the heuristic cost.</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Ant with its subset of features completed.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="ant.html#module-ant" title="ant"><code class="xref py py-class docutils literal notranslate"><span class="pre">ant</span></code></a></p>
+<dd class="field-odd"><p><strong>index_ant</strong> (<em>Integer</em>) – Ant that is going to do the local search.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="featureselector.FeatureSelector.buildFinalSolutions">
-<span class="sig-name descname"><span class="pre">buildFinalSolutions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.buildFinalSolutions" title="Permalink to this definition"></a></dt>
-<dd><p>Compute the original ACO algorithm workflow. Firstly it resets the values of the ants (<a class="reference internal" href="#featureselector.FeatureSelector.resetInitialValues" title="featureselector.FeatureSelector.resetInitialValues"><code class="xref py py-meth docutils literal notranslate"><span class="pre">featureselector.FeatureSelector.resetInitialValues()</span></code></a>), 
-secondly it starts the local and global search of each ant (<a class="reference internal" href="#featureselector.FeatureSelector.antBuildSubset" title="featureselector.FeatureSelector.antBuildSubset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">featureselector.FeatureSelector.antBuildSubset()</span></code></a>) of that colony, finally it updates
-the pheromones of the features (<a class="reference internal" href="#featureselector.FeatureSelector.updatePheromones" title="featureselector.FeatureSelector.updatePheromones"><code class="xref py py-meth docutils literal notranslate"><span class="pre">featureselector.FeatureSelector.updatePheromones()</span></code></a>). This procedure is repeated for each colony until
-complete the number of colonies.</p>
+<dt class="sig sig-object py" id="featureselector.FeatureSelector.defineLUT">
+<span class="sig-name descname"><span class="pre">defineLUT</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.defineLUT" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the Look-Up Table (LUT) for the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="featureselector.FeatureSelector.heuristicCost">
-<span class="sig-name descname"><span class="pre">heuristicCost</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_ant</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_feature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.heuristicCost" title="Permalink to this definition"></a></dt>
-<dd><p>Defines the heuristic function for the local search and the cost of including the new feature in the ant subset of features.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>index_ant</strong> (<em>Integer</em>) – Index of the ant array for the heuristic cost.</p></li>
-<li><p><strong>num_feature</strong> (<em>Integer</em>) – Index of the new feature to include.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Heuristic cost.</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Float</p>
-</dd>
-</dl>
+<dt class="sig sig-object py" id="featureselector.FeatureSelector.printTestingResults">
+<span class="sig-name descname"><span class="pre">printTestingResults</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.printTestingResults" title="Permalink to this definition"></a></dt>
+<dd><p>Function for printing the entire summary of the algorithm, including the test results.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featureselector.FeatureSelector.redefineLUT">
+<span class="sig-name descname"><span class="pre">redefineLUT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">feature</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featureselector.FeatureSelector.redefineLUT" title="Permalink to this definition"></a></dt>
+<dd><p>Re-defines the Look-Up Table (LUT) for the algorithm.</p>
 </dd></dl>
 
 <dl class="py method">

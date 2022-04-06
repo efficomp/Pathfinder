@@ -89,24 +89,39 @@ These installations can be done with <code class="docutils literal notranslate">
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline"></a></h2>
 <p>This method needs a dataset divided in training dataset and a testing dataset, each one divided in data and their corresponding classes. Datasets must be on MATLAB files.
-MATLAB variables for data must be named as “data” and MATLAB variables for corresponding classes must be named as “class”.
-In <code class="docutils literal notranslate"><span class="pre">test</span></code> subfolder there is a <code class="docutils literal notranslate"><span class="pre">test.py</span></code> that runs the application on a dataset. The usage is:</p>
-<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python test.py version dataTrainingDataset classTrainingDataset dataTestingDataset classTestingDataset numberAnts numberElitistAnts numberColonies
+MATLAB variables for data must be named as “data” and MATLAB variables for corresponding classes must be named as “class”.</p>
+<dl>
+<dt>In <code class="docutils literal notranslate"><span class="pre">test</span></code> subfolder there is a <code class="docutils literal notranslate"><span class="pre">test.py</span></code> file that runs the application on a dataset. This program can work with two dataset versions:</dt><dd><ul class="simple">
+<li><p>A dataset divided in 4 files: training data, testing data, training classes, and testing classes. This files must be in MATLAB format (.mat). Usage:</p></li>
+</ul>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python test.py mat dataTrainingDataset classTrainingDataset dataTestingDataset classTestingDataset numberAnts numberColonies numberFeatures
 </pre></div>
 </div>
-<p>where:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code> = ACOFS, EACOFS or RACOFS.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dataTrainingDataset</span></code> = Path to the file of data of the training dataset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">classTrainingDataset</span></code> = Path to the file of corresponding classes of the training dataset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dataTestingDataset</span></code> = Path to the file of data of the testing dataset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">classTestingDataset</span></code> = Path to the file of corresponding classes of the testing dataset.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numberAnts</span></code> = Number of ants for the algorithm.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numberElitistAnts</span></code> = Number of elitist ants for the algorithm. In case of choosing ACOFS version, this argument does not apply.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numberColonies</span></code> = Number of colonies for the algorithm.</p></li>
+<ul class="simple">
+<li><p>A dataset in only one file: all data together with the classes labels in the last column of the dataset. This file must be in comma separated format (.csv). Usage:</p></li>
 </ul>
-</div></blockquote>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ python test.py csv dataset numberAnts numberColonies numberFeatures
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>Where:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">.mat</span></code> version:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataTrainingDataset</span></code> = Path to the .mat file of data of the training dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">classTrainingDataset</span></code> = Path to the .mat file of corresponding classes of the trainin dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dataTestingDataset</span></code> = Path to the .mat file of data of the testing dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">classTestingDataset</span></code> = Path to the .mat file of corresponding classes of the testing dataset.</p></li>
+</ul>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">.csv</span></code> version:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dataset</span></code> = Path to the .csv file of the entire dataset.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberAnts</span></code> = Number of ants for the algorithm.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberColonies</span></code> = Number of colonies for the algorithm.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">numberFeatures</span></code> = Number of features to  be selected.</p></li>
+</ul>
+</dd>
+</dl>
 </section>
 </section>
 

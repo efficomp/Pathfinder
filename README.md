@@ -2,7 +2,7 @@
 
 Pathfinder is a innovative Feature Selection method based on the Ant Colony Optimization (ACO) algorithm.
 
-It has been developed with 2 additional variants: Elitist variant and Ranked-Based variant. This method needs a dataset divided in training dataset and a testing dataset, each one divided in data and their corresponding classes.
+Pathfinder is in continuous developing and improving, so the actual version is composed of a filter approach and a randomized search heuristic.
 
 ## Requirements
 
@@ -11,7 +11,6 @@ Pathfinder requires Python 3. It also depends on the following Python packages:
 * [NumPy](https://numpy.org/).
 * [Scikit-learn](https://scikit-learn.org/stable/).
 * [Scipy](https://www.scipy.org/).
-* [TensorFlow](https://www.tensorflow.org/).
 * [Sphinx](https://www.sphinx-doc.org/en/master/) if you want to generate documentation.
 
 ## Documentation
@@ -20,26 +19,33 @@ Pathfinder is fully documented in its [Github Pages](https://efficomp.github.io/
 
 ## Usage
 
-This program needs a dataset divided in training dataset and a testing dataset and each one divided in data and their corresponding classes.
-In `test` subfolder there is a `test.py` file that runs the application on a dataset. The usage is:
+In `test` subfolder there is a `test.py` file that runs the application on a dataset. This program can work with two dataset versions:
+ * A dataset divided in 4 files: training data, testing data, training classes, and testing classes. This files must be in MATLAB format (_.mat_). Usage:
+    * `$ python test.py mat dataTrainingDataset classTrainingDataset dataTestingDataset classTestingDataset numberAnts numberColonies numberFeatures`
 
-`$ python test.py version dataTrainingDataset classTrainingDataset dataTestingDataset classTestingDataset numberAnts numberElitistAnts numberColonies`
+ * A dataset in only one file: all data together with the classes labels in the last column of the dataset. This file must be in comma separated format (_.csv_). Usage:
+    * `$ python test.py csv dataset numberAnts numberColonies numberFeatures`
 
 where:
-- version = ACOFS, EACOFS (Elitist), or RACOFS (Ranked-Based).
-- dataTrainingDataset = Path to the file of data of the training dataset.
-- classTrainingDataset = Path to the file of corresponding classes of the trainin dataset.
-- dataTestingDataset = Path to the file of data of the testing dataset.
-- classTestingDataset = Path to the file of corresponding classes of the testing dataset.
-- numberAnts = Number of ants for the algorithm.
-- numberElitistAnts = Number of elitist ants for the algorithm. In case of choosing ACOFS for version, this argument should be 0.
-- numberColonies = Number of colonies for the algorithm.
+- _.mat_ version:
+  - dataTrainingDataset = Path to the _.mat_ file of data of the training dataset.
+  - classTrainingDataset = Path to the _.mat_ file of corresponding classes of the trainin dataset.
+  - dataTestingDataset = Path to the _.mat_ file of data of the testing dataset.
+  - classTestingDataset = Path to the _.mat_ file of corresponding classes of the testing dataset.
+- _.csv_ version: 
+  - dataset = Path to the _.csv_ file of the entire dataset.
+  - numberAnts = Number of ants for the algorithm.
+  - numberColonies = Number of colonies for the algorithm.
+  - numberFeatures = Number of features to  be selected.
+
 
 ## Publications
 
 #### Conferences
 
-1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla and M. Damas. *Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification*. In: **International Conference on Bioengineering and Biomedical Signal and Image Processing. BIOMESIP'2021**. Gran Canaria, Spain: Springer, July 2021, pp. 323-336. DOI: [10.1007/978-3-030-88163-4_28](https://doi.org/10.1007/978-3-030-88163-4_28)
+1. A. Ortega, J.J. Escobar, J. Ortega, J. González, A. Alcayde, J. Munilla, and M. Damas. *Performance Study of Ant Colony Optimization for Feature Selection in EEG Classification*. In: **International Conference on Bioengineering and Biomedical Signal and Image Processing. BIOMESIP'2021**. Gran Canaria, Spain: Springer, July 2021, pp. 323-336. DOI: [10.1007/978-3-030-88163-4_28](https://doi.org/10.1007/978-3-030-88163-4_28)
+
+2. A. Ortega, J.J. Escobar, M. Damas, A. Ortiz, and J. González. *Ant Colony Optimization for Feature Selection via a Filter-Randomized Search Heuristic*. In **Genetic and Evolutionary Computation Conference Companion. GECCO'2022**. Boston, MA, USA: ACM, July 2022. DOI: [10.1145/3520304.3528817](https://doi.org/10.1145/3520304.3528817)
 
 ## Funding
 

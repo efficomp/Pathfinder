@@ -3,7 +3,7 @@ Introduction
 
 Pathfinder is a innovative feature selection method based on the Ant Colony Optimization (ACO) algorithm.
 
-It has been developed with 2 additional variants: Elitist variant (EACOFS) and Ranked-Based variant (RACOFS).
+Pathfinder is in continuous developing and improving, so the actual version is composed of a filter approach and a randomized search heuristic.
 
 There are 2 main classes in this method:
     

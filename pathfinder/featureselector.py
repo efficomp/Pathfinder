@@ -2,55 +2,93 @@ __author__ = 'Alberto Ortega'
 __copyright__ = 'Pathfinder (c) 2021 EFFICOMP'
 __credits__ =  'Spanish Ministerio de Ciencia, Innovacion y Universidades under grant number PGC2018-098813-B-C31. European Regional Development Fund (ERDF).'
 __license__ = ' GPL-3.0'
+__version__ = "2.0"
 __maintainer__ = 'Alberto Ortega'
 __email__ = 'aoruiz@ugr.es'
 
+import sys
 import numpy as np
-import random
-from sklearn.linear_model import LogisticRegression
+import pandas as pd
+import scipy.io as sp
+import time
+from sklearn.feature_selection import SelectKBest
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import train_test_split
+from sklearn.feature_selection import f_classif
 from pathfinder.ant import Ant
+np.set_printoptions(threshold=sys.maxsize)
+
  
 class FeatureSelector:
     """Class for Ant System Optimization algorithm designed for Feature Selection.
-    
-    :param algorithm: ACOFS, EACOFS or RACOFS, depending of which algorithm is going to be used.
-    :param dataset_x: Training dataset.
-    :param dataset_y: Class corresponding to the training dataset.
-    :param predictions_x: Testing dataset.
-    :param predictions_y: Class corresponding to the testing dataset.
-    :param numberAnts: Number of ants of the colony.
-    :param iterations: Number of colonies.
+
+    :param dtype: Format of the dataset.
+    :param data_training_name: Path to the training data file (mat) or path to the dataset file (csv).
+    :param class_training: Path to the training classes file (mat).
+    :param data_testing: Path to the testing data file (mat).
+    :param class_testing: Path to the testing classes file (mat).
+    :param numberAnts: Number of ants of the colonies.
+    :param iterations: Number of colonies of the algorithm.
+    :param n_features: Number of features to be selected.
     :param alpha: Parameter which determines the weight of tau.
     :param beta: Parameter which determines the weight of eta.
     :param Q_constant: Parameter for the pheromones update function.
     :param initialPheromone: Initial value for the pheromones.
     :param evaporationRate: Rate of the pheromones evaporation.
-    :type  algorithm: String
-    :type  dataset_x: Numpy array
-    :type  dataset_y: Numpy array
-    :type  predictions_x: Numpy array
-    :type  predictions_y: Numpy array
-    :type  numberAnts: Integer
-    :type  iterations: Integer
-    :type  alpha: Float
-    :type  beta: Float
-    :type  Q_constant: Float
-    :type  initialPheromone: Float
-    :type  evaporationRate: Float
+    :type dtype: MAT or CSV
+    :type data_training_name: Numpy array
+    :type class_training: Numpy array
+    :type data_testing: Numpy array
+    :type class_testing: Numpy array
+    :type numberAnts: Integer
+    :type iterations: Integer
+    :type n_features: Integer
+    :type alpha: Float
+    :type beta: Float
+    :type Q_constant: Float
+    :type initialPheromone: Float
+    :type evaporationRate: Float
+
     """
 
-    def __init__(self, algorithm, dataset_x, dataset_y, predictions_x, predictions_y, numberAnts, numberElitistAnts, iterations, alpha, beta, Q_constant, initialPheromone, evaporationRate):
+    def __init__(self, dtype="mat", data_training_name=None, class_training_name=None, numberAnts=1, iterations=1, n_features=1, data_testing_name=None, class_testing_name=None, alpha=1, beta=1, Q_constant=1, initialPheromone=1.0, evaporationRate=0.1):
         """Constructor method.
         """
-        self.algorithm = algorithm
-        self.dataset_x = dataset_x
-        self.dataset_y = dataset_y
-        self.predictions_x = predictions_x
-        self.predictions_y = predictions_y
+        time_dataread_start = time.time()
+        if dtype=="mat":
+            dic_data_training  = sp.loadmat(data_training_name)
+            dic_class_training = sp.loadmat(class_training_name)
+            self.data_training  = np.array(dic_data_training["data"]) 
+            self.class_training = np.reshape(np.array(dic_class_training["class"]),len(self.data_training)) - 1
+            
+            dic_data_testing  = sp.loadmat(data_testing_name)
+            dic_class_testing = sp.loadmat(class_testing_name)
+            self.data_testing  = np.array(dic_data_testing["data"]) 
+            self.class_testing = np.reshape(np.array(dic_class_testing["class"]),len(self.data_testing)) - 1
+
+            # Free dictionaries memory
+            del dic_data_training
+            del dic_class_training
+
+        elif dtype=="csv":
+            df = pd.read_csv(data_training_name)
+            df = df.to_numpy() 
+            classes = df[:, -1].astype(int)
+            df = np.delete(df, -1, 1)
+            self.data_training, self.data_testing, self.class_training, self.class_testing = train_test_split(df, classes, random_state=42)
+
+
+        #print("Samples x features:", np.shape(self.dataset))
+
+        scaler = StandardScaler().fit(self.data_training)
+        self.data_training = scaler.transform(self.data_training)
+        self.data_testing = scaler.transform(self.data_testing)
+
         self.number_ants = numberAnts
-        self.number_elitist_ants = numberElitistAnts
         self.ants = [Ant() for _ in range(self.number_ants)]
-        self.number_features = len(self.dataset_x[0])
+        self.number_features = len(self.data_training[0])
         self.iterations = iterations
         self.initial_pheromone = initialPheromone
         self.evaporation_rate = evaporationRate
@@ -60,178 +98,175 @@ class FeatureSelector:
         self.feature_pheromone = np.full(self.number_features, self.initial_pheromone)
         self.unvisited_features = np.arange(self.number_features)
         self.ant_accuracy = np.zeros(self.number_ants)
+        self.n_features = n_features
+        if self.n_features > self.number_features:
+            self.n_features = self.number_features
+        #random.seed(1) ########################################################################
+        
+        time_dataread_stop = time.time()
+        self.time_dataread = time_dataread_stop - time_dataread_start
+        self.time_LUT = 0
+        self.time_reset = 0
+        self.time_localsearch = 0
+        self.time_pheromonesupdate = 0
 
+    def defineLUT(self):
+        """Defines the Look-Up Table (LUT) for the algorithm.
+        """
+        time_LUT_start = time.time()
 
+        fs = SelectKBest(score_func=f_classif, k='all')
+        fs.fit(self.data_training, self.class_training)
+        self.LUT = fs.scores_
+        sum = np.sum(self.LUT)
+        for i in range(len(fs.scores_)):
+            self.LUT[i] = self.LUT[i]/sum
+        
+        time_LUT_stop = time.time()
+        self.time_LUT = self.time_LUT + (time_LUT_stop - time_LUT_start)
+
+    def redefineLUT(self, feature): 
+        """Re-defines the Look-Up Table (LUT) for the algorithm.
+        """
+        time_LUT_start = time.time()
+        
+        weightprob = self.LUT[feature]
+        self.LUT[feature] = 0
+        mult = 1/(1-weightprob)
+        self.LUT = self.LUT * mult
+        
+        time_LUT_stop = time.time()
+        self.time_LUT = self.time_LUT + (time_LUT_stop - time_LUT_start)
+        
     def resetInitialValues(self):
         """Initialize the ant array and assign each one a random initial feature.
         """
+        time_reset_start = time.time()
 
         self.ants = [Ant() for _ in range(self.number_ants)]
         initialFeaturesValues = np.arange(self.number_features)
         for i in range(self.number_ants):
-            rand = random.choice(initialFeaturesValues)
-            rand_index = np.where(initialFeaturesValues == rand)
-            initialFeaturesValues = np.delete(initialFeaturesValues, rand_index)
+            rand = np.random.choice(initialFeaturesValues, 1, p=self.LUT)[0]
             self.ants[i].feature_path.append(rand)
+            actual_features_list = self.ants[i].feature_path                     
+            actual_subset = np.array(self.data_training[:,actual_features_list])
+            actual_classifier = KNeighborsClassifier()
+            actual_classifier.fit(actual_subset, self.class_training)
+            scores = cross_val_score(actual_classifier, actual_subset, self.class_training, cv=5)
+            actual_accuracy = scores.mean()
+            np.put(self.ant_accuracy, i, actual_accuracy)
 
-    def heuristicCost(self, index_ant, num_feature):
-        """Defines the heuristic function for the local search and the cost of including the new feature in the ant subset of features.
-        
-        :param index_ant: Index of the ant array for the heuristic cost.
-        :param num_feature: Index of the new feature to include.
-        :type index_ant: Integer
-        :type num_feature: Integer
-        :return: Heuristic cost.
-        :rtype: Float
-        """
-        
-        # Define the new feature dataset subset of the ant and compute the accuracy
-        new_features_list = np.array(self.ants[index_ant].feature_path)
-        new_features_list = np.append(new_features_list, num_feature)
-        new_subset = np.array(self.dataset_x[:,new_features_list])
-        new_test_set = np.array(self.predictions_x[:,new_features_list])
-        new_lr_classifier = LogisticRegression(solver='lbfgs', max_iter=1000)
-        new_lr_classifier.fit(new_subset, self.dataset_y)
-        new_accuracy = new_lr_classifier.score(new_test_set, self.predictions_y)
-        # Compare the old and new accuracy, if it's better it returns the diff but if isn't it returns 0
-        if new_accuracy > self.ant_accuracy[index_ant]:
-            h = new_accuracy - self.ant_accuracy[index_ant]
-        else:
-            h = 0
-        return h
+        time_reset_stop = time.time()
+        self.time_reset = self.time_reset + (time_reset_stop - time_reset_start)
 
     def antBuildSubset(self, index_ant):
-        """Global and local search for the ACO algorithm. It completes the subset of features of the ant searching
-        between all the rest of features in order to find the best one which improves the subset of features of the 
-        actual ant.    
-        
-        :param index_ant: Index of the ant array for the heuristic cost.
+        """Global and local search for the ACO algorithm. It completes the subset of features of the ant searching.
+
+        :param index_ant: Ant that is going to do the local search.
         :type index_ant: Integer
-        :return: Ant with its subset of features completed.
-        :rtype: :class:`ant`
         """
+        time_localsearch_start = time.time()
 
         # Initialize unvisited features and it removes the first of the ant actual subset
         self.unvisited_features = np.arange(self.number_features)
         indexes = np.where(np.in1d(self.unvisited_features, self.ants[index_ant].feature_path))[0]
         self.unvisited_features = np.delete(self.unvisited_features, indexes)
+        self.defineLUT()
 
-        run = True
-        while run:
+        n = 1
+        while n < self.n_features:
             # Initialize parameters
             p = np.zeros(np.size(self.unvisited_features))
             p_num = np.zeros(np.size(self.unvisited_features))
-            p_den = 0
-            eta = np.zeros(np.size(self.unvisited_features))
-            tau = np.zeros(np.size(self.unvisited_features))
-
-            # Define the actual feature dataset subset of the ant and compute the accuracy
-            actual_features_list = self.ants[index_ant].feature_path
-            actual_subset = np.array(self.dataset_x[:,actual_features_list])
-            actual_test_set = np.array(self.predictions_x[:,actual_features_list])
-            actual_lr_classifier = LogisticRegression(solver='lbfgs', max_iter=1000)
-            actual_lr_classifier.fit(actual_subset, self.dataset_y)
-            np.put(self.ant_accuracy, index_ant, actual_lr_classifier.score(actual_test_set, self.predictions_y))
 
             # Compute eta, tau and the numerator for each unvisited feature 
             for index_uf in range(len(self.unvisited_features)):
-                np.put(eta,index_uf, self.heuristicCost(index_ant, self.unvisited_features[index_uf]))
-                np.put(tau,index_uf, self.feature_pheromone[index_uf])
-                np.put(p_num, index_uf, (tau[index_uf]**self.alpha) * (eta[index_uf]**self.beta))
+                eta = self.LUT[self.unvisited_features[index_uf]]
+                tau = self.feature_pheromone[index_uf]
+                np.put(p_num, index_uf, (tau**self.alpha) * (eta**self.beta))
+
+            den = np.sum(p_num)
+            for index_uf in range(len(self.unvisited_features)):
+                p[index_uf] = p_num[index_uf] / den
+            next_feature = np.random.choice(self.unvisited_features, 1, p=p)[0]
             
-            # Compute denominator as sumatory of the numerators, if it's 0 none of the rest of univisited features improves the actualsubset
-            p_den = np.sum(p_num)
-            if p_den == 0:
-                run = False
-            else:
-                # Compute common probabilistic function of ACO
-                for index_uf in range(len(self.unvisited_features)):
-                    np.put(p, index_uf, p_num[index_uf] / p_den)    
+            if (n==self.n_features-1):
+                new_features_list = np.array(self.ants[index_ant].feature_path)
+                new_features_list = np.append(new_features_list,next_feature)
+                new_subset = np.array(self.data_training[:,new_features_list])
+                new_classifier = KNeighborsClassifier()
+                new_classifier.fit(new_subset, self.class_training)
+                scores = cross_val_score(new_classifier, new_subset, self.class_training, cv=5)
+                new_accuracy = scores.mean()
 
-                # Choose the feature with best probability and add to the ant subset
-                index_best_p = np.argmax(p)
-                self.ants[index_ant].feature_path.append(self.unvisited_features[index_best_p])
-                # Remove the chosen feature of the unvisited features
-                self.unvisited_features = np.delete(self.unvisited_features, index_best_p)
+        
+            # Choose the feature with best probability and add to the ant subset
+            self.ants[index_ant].feature_path.append(next_feature)
+            # Remove the chosen feature of the unvisited features
+            self.unvisited_features = np.delete(self.unvisited_features, np.where( self.unvisited_features == next_feature))
+            if (n==self.n_features-1):
+                np.put(self.ant_accuracy, index_ant, new_accuracy)
+            self.redefineLUT(next_feature)
+            n=n+1
+        
+        time_localsearch_stop = time.time()
+        self.time_localsearch = self.time_localsearch + (time_localsearch_stop - time_localsearch_start)
 
-        print("\t\tPath:" ,self.ants[index_ant].feature_path)
-        print("\t\tAcuraccy:", self.ant_accuracy[index_ant])
-        #print("\t\tPheromones:", self.feature_pheromone[self.ants[index_ant].feature_path])
-
-
+        
     def updatePheromones(self):
         """Update the pheromones trail depending on which variant of the algorithm it is selected.
         """
-        if self.algorithm == 'ACOFS':
-            for f in range(self.number_features):
-                for ia in range(self.number_ants):
-                    sum_delta = 0
-                    if f in self.ants[ia].feature_path:
-                        sum_delta += self.Q_constant / self.ant_accuracy[ia]
+        time_pheromonesupdate_start = time.time()
 
-                updated_pheromone = ( 1 - self.evaporation_rate) * self.feature_pheromone[f] + sum_delta
-                np.put(self.feature_pheromone, f, updated_pheromone)
+        for f in self.ants[np.argmax(self.ant_accuracy)].feature_path:
+            sum_delta = 0
+            sum_delta += self.Q_constant / ((1-self.ant_accuracy[np.argmax(self.ant_accuracy)])*100)
+
+            updated_pheromone = ( 1 - self.evaporation_rate) * self.feature_pheromone[f] + sum_delta
+            if(updated_pheromone < 0.4):
+                updated_pheromone = 0.4
+            #print(updated_pheromone)            
+            np.put(self.feature_pheromone, f, updated_pheromone)
         
-        elif self.algorithm == 'EACOFS':  
-            for f in range(self.number_features):
-                for ia in range(self.number_ants):
-                    sum_delta = 0
-                    if f in self.ants[ia].feature_path:
-                        sum_delta += self.Q_constant / self.ant_accuracy[ia]
-
-                updated_pheromone = ( 1 - self.evaporation_rate) * self.feature_pheromone[f] + sum_delta
-                np.put(self.feature_pheromone, f, updated_pheromone)
-
-            index_best_accu = np.argmax(self.ant_accuracy)
-            best_acc = np.amax(self.ant_accuracy)
-            best_ant = self.ants[index_best_accu]
-            for f in best_ant.feature_path:
-                updated_pheromone_best_ant = self.feature_pheromone[f] + self.number_elitist_ants * self.Q_constant / best_acc
-                np.put(self.feature_pheromone, f, updated_pheromone_best_ant)
-
-        elif self.algorithm == 'RACOFS':
-            aux_ants = np.arange(self.number_ants)
-            sorted_index_ants = [x for _, x in sorted(zip(self.ant_accuracy, aux_ants))]
-            
-            for f in range(self.number_features):
-                for iba in range(self.number_elitist_ants - 1):
-                    sum_delta = 0
-                    if f in self.ants[sorted_index_ants[iba]].feature_path:
-                        sum_delta += (self.number_elitist_ants - iba) * self.Q_constant / self.ant_accuracy[sorted_index_ants[iba]]
-
-                updated_pheromone = ( 1 - self.evaporation_rate) * self.feature_pheromone[f] + sum_delta
-                np.put(self.feature_pheromone, f, updated_pheromone)
-
-            index_best_accu = np.argmax(self.ant_accuracy)
-            best_acc = np.amax(self.ant_accuracy)
-            best_ant = self.ants[index_best_accu]
-            for f in best_ant.feature_path:
-                updated_pheromone_best_ant = self.feature_pheromone[f] + self.number_elitist_ants * self.Q_constant / best_acc
-                np.put(self.feature_pheromone, f, updated_pheromone_best_ant)
-    
-    def buildFinalSolutions(self):
+        time_pheromonesupdate_stop = time.time()
+        self.time_pheromonesupdate = self.time_pheromonesupdate + (time_pheromonesupdate_stop - time_pheromonesupdate_start)
+        
+    def acoFS(self):
         """Compute the original ACO algorithm workflow. Firstly it resets the values of the ants (:py:meth:`featureselector.FeatureSelector.resetInitialValues`), 
-        secondly it starts the local and global search of each ant (:py:meth:`featureselector.FeatureSelector.antBuildSubset`) of that colony, finally it updates
-        the pheromones of the features (:py:meth:`featureselector.FeatureSelector.updatePheromones`). This procedure is repeated for each colony until
-        complete the number of colonies.
         """
 
+        self.defineLUT()
         for c in range(self.iterations):
             self.resetInitialValues()
-            print("Colony", c, ":")
+            #print("Colony", c, ":")
             ia = 0
             for ia in range(self.number_ants):
-                print("\tAnt", ia, ":")
                 self.antBuildSubset(ia)
+                #print("\tAnt", ia, ":")
+                #print("\t\tPath:" ,self.ants[ia].feature_path)
+                #print("\t\tCV-Acuraccy:", self.ant_accuracy[ia])
             self.updatePheromones()
+            #print("\t\tPheromones:", self.feature_pheromone)
 
-    def acoFS(self):
-        """Call the :py:meth:`featureselector.FeatureSelector.buildFinalSolutions` and then it search the best ant of the last colony.
-        :return: Path of the best ant of the last colony.
-        :rtype: Array of Integers.
+    def printTestingResults(self):
+        """Function for printing the entire summary of the algorithm, including the test results.
         """
+        print("The final subset of features is: ",self.ants[np.argmax(self.ant_accuracy)].feature_path)
+        print("Number of features: ",len(self.ants[np.argmax(self.ant_accuracy)].feature_path))
 
-        self.buildFinalSolutions()
-        index_best_ant = np.argmax(self.ant_accuracy)
+        data_training_subset = self.data_training[:,self.ants[np.argmax(self.ant_accuracy)].feature_path]
+        data_testing_subset = self.data_testing[:,self.ants[np.argmax(self.ant_accuracy)].feature_path]
+                
+        print("Subset of features dataset accuracy:")
 
-        return self.ants[index_best_ant].feature_path
+        knn = KNeighborsClassifier()
+        knn.fit(data_training_subset, self.class_training)
+        knn_score = knn.score(data_testing_subset, self.class_testing) 
+        print("\t CV-Training set: ", np.max(self.ant_accuracy))
+        print("\t Testing set    : ", knn_score)
+
+        print("\t Time elapsed reading data        : ", self.time_dataread)
+        print("\t Time elapsed in LUT compute      : ", self.time_LUT)
+        print("\t Time elapsed reseting values     : ", self.time_reset)
+        print("\t Time elapsed in local search     : ", self.time_localsearch)
+        print("\t Time elapsed updating pheromones : ", self.time_pheromonesupdate)
